@@ -93,7 +93,7 @@ public class BinaryTree {
 
     public void replaceValue(int oldVal, int newVal) {
         replaceValueHelper(root, oldVal, newVal);
-    }
+}
 
     public int findMin() {
         return findMinHelper(root);
@@ -225,6 +225,20 @@ public class BinaryTree {
         // ADD YOUR CODE HERE -- USE DEPTH FIRST SEARCH OF
         // BINARY TREE (WHICH IS BASED ON RECURSION)
 
+        // First, we check the current node(root) to see if the tree exists.
+        if (node == null) {
+            return;
+        }
+
+        // If the current node is equal to the old value, we make it equal to the new value.
+        if (node.data == oldVal) {
+            node.data = newVal;
+        }
+
+        // Recursive method that traverses the tree left and right to find the oldVals and newVals
+        replaceValueHelper(node.left, oldVal, newVal);
+        replaceValueHelper(node.right, oldVal, newVal);
+
     }
 
 
@@ -247,7 +261,19 @@ public class BinaryTree {
         // ADD YOUR CODE HERE -- USE DEPTH FIRST SEARCH OF
         // BINARY TREE (WHICH IS BASED ON RECURSION)
 
-        return Integer.MAX_VALUE;
+        // If the tree is empty, return the maximum value
+        if (node == null) {
+            return Integer.MAX_VALUE;
+        }
+
+        // Recursively traverse the left and right sub trees to find the minimum value
+        int leftMin = findMinHelper(node.left);
+        int rightMin = findMinHelper(node.right);
+
+        // Return the smallest value of the current node, left and right subtrees
+        return Math.min(node.data, Math.min(leftMin, rightMin));
+        
+
     }
 
 
@@ -258,7 +284,7 @@ public class BinaryTree {
      * return a count on the number of nodes that contain a data value larger
      * than the parameter 'val'.
      *
-     * If the tree is empty, return 0.
+     * If the tree is empty, return 0.  <----
      *
      * Depth first search of the tree is based on recursion. This will result
      * in very few lines of code.
@@ -270,9 +296,20 @@ public class BinaryTree {
         // BINARY TREE (WHICH IS BASED ON RECURSION)
 
         // return -1; // RECALL, IF TREE IS EMPTY, RETURN -1
+        
+        // if the tree is empty, return 0
+        if (node == null) {
+            return 0;
+        }
 
+        // Count the node if the value is greater than val
+        int count = (node.data > val) ? 1 : 0;
 
-        return -1;
+        // Revursively traverse the right and left subtrees in the tree and calculate the count
+        count += nodesGTHelper(node.left, val);
+        count += nodesGTHelper(node.right, val);
+
+        return count;
     }
 
 
@@ -311,6 +348,19 @@ public class BinaryTree {
         // COUNT LOCATIONS IN THE RETURNED ARRAY AS SHOWN BELOW, ELSE
         // THE 'SUM' IS RETURNED IN INDEX LOCATION 0, AND COUNT IS LOCATION 1
 
-        return new int[]{0, 0};
+        // If the tree is empty, return 0 for the sum and count
+        if (n == null) {
+            return new int[]{0, 0};
+        }
+
+        // Recursively traverse the tree and get the sum and count from the left and right subtrees
+        int[] left = averageHelper(n.left);
+        int[]right = averageHelper(n.right);
+
+        // Calculate the sum and count for the current subtree
+        int sum = left[0] + right[0] + n.data;
+        int count = left[1] + right[1] + 1;
+
+        return new int[]{sum, count};
     }
 }
